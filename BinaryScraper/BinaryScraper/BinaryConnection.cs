@@ -12,6 +12,8 @@ namespace BinaryScraper
         private ClientWebSocket ws = new ClientWebSocket();
         private Uri uri = new Uri("wss://ws.binaryws.com/websockets/v3?app_id=1089");
 
+        public string response { get; set; }
+
         public BinaryConnection() { }
 
         public async Task SendRequest(string data)
@@ -35,10 +37,9 @@ namespace BinaryScraper
             Console.WriteLine(data);
             Console.WriteLine("\r\n \r\n");
 
-
         }
 
-        public async Task StartListen()
+        public async Task StartListenStream()
         {
             WebSocketReceiveResult result;
             while (this.ws.State == WebSocketState.Open)
@@ -63,6 +64,36 @@ namespace BinaryScraper
 
                 } while (!result.EndOfMessage);
             }
+            Console.WriteLine("SOCKET CLOSED!!");
+        }
+
+        public async Task<string> StartListen()
+        {
+            WebSocketReceiveResult result;
+            response = string.Empty;
+
+            var buffer = new ArraySegment<byte>(new byte[1024]);
+        
+            do
+            {
+                result = await this.ws.ReceiveAsync(new ArraySegment<byte>(buffer.Array), CancellationToken.None);
+
+                if (result.MessageType == WebSocketMessageType.Close)
+                {
+                    Console.WriteLine("Connection Closed!");
+                    break;
+                }
+                else
+                {
+                    var str = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
+                    //Console.WriteLine("Received Data at: " + DateTime.Now);
+                    //Console.WriteLine(str);
+                    //Console.WriteLine("\r\n");
+                    response += str;
+                }
+
+            } while (!result.EndOfMessage);
+            return response;
         }
 
         public async Task Connect()

@@ -10,12 +10,9 @@ namespace BinaryScraper
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
 
-            // Keep the console window open in debug mode.
-            Console.WriteLine("Press any key to exit.");
-            Console.ReadKey();
-            Test();
+            GetSymbols();
+            Console.ReadLine();
         }
 
         private static void GetSymbols()
@@ -36,20 +33,19 @@ namespace BinaryScraper
             bws.Connect().Wait();
 
             bws.SendRequest(request).Wait();
-            bws.StartListen();
+            bws.StartListenStream();
 
-            Console.ReadLine();
         }
 
-        private static void GetData(string request)
+        private static string GetData(string request)
         {
             var bws = new BinaryConnection();
             bws.Connect().Wait();
 
             bws.SendRequest(request).Wait();
-            bws.StartListen();
+            var response = bws.StartListen();
 
-            Console.ReadLine();
+            return response.Result;
         }
     }
 }
