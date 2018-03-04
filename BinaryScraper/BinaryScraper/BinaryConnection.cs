@@ -33,9 +33,9 @@ namespace BinaryScraper
                 true,
                 CancellationToken.None);
 
-            Console.WriteLine("The request has been sent: ");
-            Console.WriteLine(data);
-            Console.WriteLine("\r\n \r\n");
+            //Console.WriteLine("The request has been sent: ");
+            //Console.WriteLine(data);
+            //Console.WriteLine("\r\n \r\n");
 
         }
 
@@ -57,9 +57,9 @@ namespace BinaryScraper
                     else
                     {
                         var str = Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
-                        Console.WriteLine("Received Data at: " + DateTime.Now);
-                        Console.WriteLine(str);
-                        Console.WriteLine("\r\n");
+                        //Console.WriteLine("Received Data at: " + DateTime.Now);
+                        //Console.WriteLine(str);
+                        //Console.WriteLine("\r\n");
                     }
 
                 } while (!result.EndOfMessage);
@@ -98,14 +98,14 @@ namespace BinaryScraper
 
         public async Task Connect()
         {
-            Console.WriteLine("Prepare to connect to: " + this.uri.ToString());
-            Console.WriteLine("\r\n");
+            //Console.WriteLine("Prepare to connect to: " + this.uri.ToString());
+            //Console.WriteLine("\r\n");
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
             await ws.ConnectAsync(uri, CancellationToken.None);
 
-            Console.WriteLine("The connection is established!");
-            Console.WriteLine("\r\n");
+            //Console.WriteLine("The connection is established!");
+            //Console.WriteLine("\r\n");
         }
     }
 }

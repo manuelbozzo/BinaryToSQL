@@ -47,8 +47,8 @@
   <ItemGroup>
     <Compile Include="BinaryConnection.cs" />
     <Compile Include="BinaryModels\ActiveSymbol.cs" />
-    <Compile Include="BinaryModels\EchoReq.cs" />
-    <Compile Include="BinaryModels\RootObject.cs" />
+    <Compile Include="BinaryModels\History.cs" />
+    <Compile Include="BinaryModels\Ticks.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

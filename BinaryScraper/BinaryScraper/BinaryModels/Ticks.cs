@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace BinaryScraper.BinaryModels
 {
-    class EchoReq
+    public class Ticks
     {
-        public string active_symbols { get; set; }
-        public string product_type { get; set; }
+        public string quote;
+        public string value;
+        public string epoch;
     }
 }
