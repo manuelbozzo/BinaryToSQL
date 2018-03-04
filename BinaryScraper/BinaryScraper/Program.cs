@@ -18,7 +18,7 @@ namespace BinaryScraper
 
         private static List<string> ParseSymbols(string json)
         {
-            BinaryModels.RootObject sym = JsonConvert.DeserializeObject<BinaryModels.RootObject>(json);
+            BinaryModels.RootObjectActiveSymbol sym = JsonConvert.DeserializeObject<BinaryModels.RootObjectActiveSymbol>(json);
 
             return sym.active_symbols.Where(x => x.market == "forex").Select(x => x.symbol).ToList();
         }
@@ -28,6 +28,11 @@ namespace BinaryScraper
             string request = "{ \"active_symbols\": \"brief\", \"product_type\": \"basic\"}";
             string json = GetData(request);
             symbols = ParseSymbols(json);
+        }
+
+        private static void GetValuesFromDates(DateTime startDate, DateTime endDate, string symbol)
+        {
+            string request = "{ \"active_symbols\": \"brief\", \"product_type\": \"basic\"}";
         }
 
         private static void Test()

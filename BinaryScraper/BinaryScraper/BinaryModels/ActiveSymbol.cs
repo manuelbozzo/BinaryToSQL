@@ -20,4 +20,17 @@ namespace BinaryScraper.BinaryModels
         public string symbol_type { get; set; }
         public int? allow_forward_starting { get; set; }
     }
+
+    class EchoReqActiveSymbol
+    {
+        public string active_symbols { get; set; }
+        public string product_type { get; set; }
+    }
+
+    class RootObjectActiveSymbol
+    {
+        public List<ActiveSymbol> active_symbols { get; set; }
+        public EchoReqActiveSymbol echo_req { get; set; }
+        public string msg_type { get; set; }
+    }
 }
