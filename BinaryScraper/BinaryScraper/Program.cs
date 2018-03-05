@@ -10,13 +10,15 @@ namespace BinaryScraper
     class Program
     {
         static List<string> symbols;
-        static DateTime startDate = new DateTime(2018, 1, 1);
-        static DateTime endDate = DateTime.Now;
+        static DateTime startDate = new DateTime(2018, 2, 12);
+        static DateTime endDate = new DateTime(2018, 2, 16);
         static void Main(string[] args)
         {
+            SQLInterfase.DeleteAll();
             GetSymbols();
             foreach (string symbol in symbols)
             {
+                Console.WriteLine("Geting values for " + symbol);
                 GetValuesFromDates(startDate, endDate, symbol);
             }
             Console.ReadLine();
@@ -61,10 +63,15 @@ namespace BinaryScraper
                 string request = "{ \"ticks_history\": \"" + symbol + "\", \"end\": \"" + endEpoch.ToString() + "\", \"start\": \"" + startEpoch.ToString() + "\", \"style\": \"ticks\" }";
                 string json = GetData(request);
 
-                ticks.AddRange(ParseHistory(json));
+                ticks = ParseHistory(json);
                 Console.WriteLine("ticks count: " + ticks.Count +" / " + FromUnixTime(Convert.ToInt64(ticks.Max(x => x.epoch))).ToString() );
 
                 startEpoch = endEpoch + 1;
+
+                foreach (var item in ticks)
+                {
+                    SQLInterfase.InsertSingleRate(item);
+                }
 
             } while (endEpoch < calculateSeconds(endDate));
             return ticks;
@@ -91,7 +98,7 @@ namespace BinaryScraper
             return response.Result;
         }
 
-        public static long calculateSeconds(DateTime date)
+        private static long calculateSeconds(DateTime date)
 
         {
             DateTime dt = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
@@ -102,7 +109,7 @@ namespace BinaryScraper
 
         }
 
-        public static DateTime FromUnixTime(long unixTime)
+        private static DateTime FromUnixTime(long unixTime)
         {
             var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTime);
